@@ -38,6 +38,7 @@ const authRoutes = require("./routes/authRoutes");
 const healthDataRoutes = require("./routes/healthDataRoutes");
 const genaiRoute = require("./routes/genaiRoutes"); // Import the new genai route
 const myconsultation = require("./routes/saveConsultation.js");
+const myconsultations=require("./routes/ConsultantDataRoute.js")
 
 
 
@@ -66,6 +67,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/health-data", healthDataRoutes);
 app.use("/api/genai", genaiRoute); // Add the genai route for the AI response
 app.use("/api/consultation", myconsultation);
+app.use('/api/consultations', myconsultations);
 
 // Start the server
 const PORT = process.env.PORT || 5001;

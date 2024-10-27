@@ -194,21 +194,41 @@ router.post('/', async (req, res) => {
 });
 
 // Get consultations for the authenticated user
-router.get('/', async (req, res) => {
-    try {
-        const userId = req.user._id;
-        const consultations = await Consultation.find({ userId })
-            .sort({ timestamp: -1 }); // Sort by newest first
+// router.get('/', async (req, res) => {
+//     try {
+//         const userId = req.user._id;
+//         const consultations = await Consultation.find({ userId })
+//             .sort({ timestamp: -1 }); // Sort by newest first
 
-        res.status(200).json({
-            success: true,
-            data: consultations
-        });
-    } catch (error) {
-        console.error('Error fetching consultations:', error);
-        res.status(500).json({
-            success: false,
-            error: 'Failed to fetch consultations'
-        });
+//         res.status(200).json({
+//             success: true,
+//             data: consultations
+//         });
+//     } catch (error) {
+//         console.error('Error fetching consultations:', error);
+//         res.status(500).json({
+//             success: false,
+//             error: 'Failed to fetch consultations'
+//         });
+//     }
+// });
+
+// routes/consultations.js
+
+// Route to get consultations by userId
+router.get('/:userId', async (req, res) => {
+  const { userId } = req.params;
+  console.log(req.params)
+  try {
+    const consultations = await Consultation.find({ userId });
+    if (!consultations) {
+      return res.status(404).json({ message: 'No consultations found for this user' });
     }
+    res.status(200).json(consultations);
+  } catch (error) {
+    console.error('Error fetching consultations:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
 });
+
+module.exports = router;
